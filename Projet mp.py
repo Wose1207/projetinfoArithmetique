@@ -100,29 +100,83 @@ def VitesseNP(n):
 
 
 
-""" L'objectif est dans un premier temps de créer le programme désert, puis dans un second temps d'en faire une fonction qui montre que les déserts sont de plus en plus grand
+""" Je vais mintéresser mtn a la croissance des déserts de nombres premiers , c'est a dire l'espace ou il n'y a plus de nombres premiers . L'objectif est dans un premier temps de créer le programme désert, puis dans un second temps d'y reprensenter graphiquement"""
 
 def Desert(n):
-    "Je cherche le nombre N telle que entre N et N+n il n'y est pas de nombre premiers : Entrée un nombre naturel entier"
+    "Je cherche le nombre N telle que entre N et N+n il n'y est pas de nombre premiers : Entrée un nombre naturel entier plus grand que 1"
+    assert n>1 and n%2==0,'Cela ne sert a rien de prendre des nombres impaires et n>1'
     passeurVar=n                               
-    passeurFixe=n
+    passeurFixe=n+1                                    # Peut importe de où on part, l'important c'est de ne pas partir en boucle infini donc passeurVar = Passeurfixe-1
     while True:
-        if NP(passeurVar)==False:
+        if NP(passeurVar)==False:                      # Je modifie mon passeur variable jusqu'à que ce soit un nombre premier
             passeurVar-=1
         else:
             if passeurFixe-passeurVar==n:
-                return passeurVar
+                return passeurVar                      # Si j'ai mon désert, alors je renvoie N=passseurvar
             else:
-                passeurFixe+=n
-                passeurVar=passeurFixe
-"""
+                passeurFixe=passeurVar+n
+                passeurVar=passeurFixe-1
+                
+def GraphDesert(n):
+    "... Building..."
+                
 
 
 
 
-## 5 Spirale Euler
 
-"""Dans un premier temps je vais calculer le ratio des nombres premiers presents sur les 4 premiers diagonales partant de 1,2,3 et 4 par rapport au total des nombres premiers ( en fonction d'un nombre de tour), puis nous nous interresseront au problemes d'Euler et de Uliam"""
+
+## 4 Les Jumeaux         ( By Colin Perret )
+
+def NombresPremiersJumeauxBool(n):
+    "sous fonction, je veux un n plus grand ou égale a 2, entier et naturelle"
+    assert n>1,'n>=2'
+    if NP(n)==True and NP(n+2)==True:
+        return True
+    else:
+        return False                                        # Ceci est le programme booléen qui me servira dans la suite
+
+
+def NombresPremiersJumeaux(n):
+    "Entrée : n entier et renvoie le couple (n,n+2) si ils sont tous les deux premiers"
+    assert n>1,'n>=2 please'
+    if NombresPremiersJumeauxBool(n):
+        return (n,n+2)
+    else:
+        return "Ce n'est pas un nombre premier jumeaux"     # On modifie le programme pour que ce soit un peu plus poussé
+
+        
+
+def NbrsJumeaux(n):
+    "Entrée : n entier et renvoie le nombre de nombres premiers jusqu'à n et la liste de ces nombres"
+    assert n>1,'please n>=2'
+    compteur=0          
+    L=[]
+    for i in range (3,n+1,2):                              # Afin de réduire la complexité , je ne prend que les entier impair a partir du rang 3
+        if NombresPremiersJumeauxBool(i):
+            compteur+=1
+            L.append(NombresPremiersJumeaux(i))
+    return compteur and L
+
+    
+def NiemeJumeaux(n):
+    "Entrée : n entier et renvoie "
+    i=3                                                   # i est ma variable, qui va passer tout les nombres impaires jusqu'a qu'il est trouver n jumeaux
+    compteur=0
+    while compteur!=n:
+        if NombresPremiersJumeauxBool(i)==True:
+            compteur+=1
+        i+=2
+    return (NombresPremiersJumeaux(i-2))                  # Je retranche -2 car j'ai ajouter +2 en trop a la fin de mon while
+
+
+
+
+
+
+## 5 Spirale Euler    
+
+"""Dans un premier temps je vais calculer le ratio des nombres premiers presents sur les 4 premiers diagonales partant de 1,2,3 et 4 par rapport au total des nombres premiers ( en fonction d'un nombre de tour), puis nous nous interresseront au problemes d'Euler et de Uliam . Il existe 4 suites pour representer graphiquement la spirale , que je note u v w et z"""
 
 def Spirale(d):
     "d est la diagonale, un tour c'est par rappport a la diagonale 1, soit la suite Un , donc exemple : le premier tour va de uo a u1-1 , ie de 1 a 6 , la deuxieme ect"
@@ -200,7 +254,7 @@ def GraphSpi(d):
     
     main.mainloop()
         
-"""Ici n'est pas l'objectif , je dois percevoir des diagnoales de nombres premiers dans la Spirale. Le problème d'Euler dit que les nombres premiers ont tendance a se concentrer sur des diagonales, je vais donc faire un point a vhaque fois que le nombre est premier, en reprenant la structure de mon ancien programme"""
+"""Ici n'est pas l'objectif , je dois percevoir des diagnoales de nombres premiers dans la Spirale. Le problème d'Euler dit que les nombres premiers ont tendance a se concentrer sur des diagonales, je vais donc faire un point a chaque fois que le nombre est premier, en reprenant la structure de mon ancien programme"""
         
 def GraphSpi2(d):
     "d est le nombre de tours, lors de l'utilisation du programme , pour percevoir le phenomène de Euler, veuillez mettre un nombre de tours de l'ordre de 150, au delà le programme est très complexe ( pour 200 cela dure 20s) , et en dessous on ne voit pas bien le phenomène, veullez appuyer sur enter(ou return)"""
@@ -211,13 +265,14 @@ def GraphSpi2(d):
     def clavier(event):
         touche=event.keysym
         if touche=="Return":
+            canvas.create_text(500,30,text='On voit clairement que les nombres premiers en spirales suivent des diagonales précisent')
             canvas.create_line(123,1000,1000,123)
+            canvas.create_line(0,883,883,0)
+            canvas.create_line(0,643,643,0)
+            canvas.create_line(363,1000,1000,363)
         #if touche=="a":
             #canvas.create_line
             
-        
-    
-    
     canvas=Canvas(main,height=1000,width=1000)
     canvas.pack()
     canvas.focus_set()
@@ -253,7 +308,7 @@ def GraphSpi2(d):
     
     main.mainloop()
         
-"""On peut voir que les nombres premiers suivent des diagonales, précisent , sur le fenetre, veuillez appuyer sur la touche enter pour voir les diagonales"""
+"""On peut voir que les nombres premiers suivent des diagonales, précisent , sur la fenetre, veuillez appuyer sur la touche enter pour voir les diagonales"""
         
         
         
