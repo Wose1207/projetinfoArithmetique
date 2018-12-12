@@ -19,7 +19,7 @@ def NP(n=7):
 
 ## 1 Decomposition facteurs premiers
     
-    """Tout nombre se décompose en produit de facteur premiers, et on pourrait montrer que tout nombre se décompose aussi en somme de 2 nombre premier"""
+    """Tout nombre se décompose en produit de facteur premiers, et on pourrait montrer que tout nombre pair se décompose aussi en somme de 2 nombre premier"""
     
 def DCNP(n):
     "je décompose un nombre en la suite de ces nombres prems, Entrée un entier naturelle plus grand que 1"
@@ -46,11 +46,12 @@ def DCNP(n):
     return Ltuples                                 # Renvoie la Liste de tuples
     
 def DCNPv2(n):
-    "je décompose un nombre en 2 nombres premiers, Entrée un entier naturelle plus grand ou égale à 4 car 2 est le plus petit nombre premier"
-    assert n>=4," J'aimerais un nombre plus grand ou égale a 4 merci de votre compréhension"
+    "je décompose un nombre pair en 2 nombres premiers, Entrée un entier naturelle pair plus grand ou égale à 4 car 2 est le plus petit nombre premier"
+    assert n>=4 and n%2==0," J'aimerais un nombre plus grand ou égale a 4  et Impair"
     for i in range(2,n-1):
         if NP(i) and NP(n-i):
-            return (i,n-i)                   # Programme trivial , ce qui est d'ailleurs étontant c'est que cela semble marcher pour tout nombre plus grand ou égale a 4
+            return (i,n-i)
+                                 # Programme trivial , ce qui est d'ailleurs étontant c'est que cela semble marcher pour tout nombre plus grand ou égale a 4
             
         
     
@@ -112,7 +113,8 @@ def Desert(n):
             passeurVar-=1
         else:
             if passeurFixe-passeurVar==n:
-                return passeurVar                      # Si j'ai mon désert, alors je renvoie N=passseurvar
+                return (passeurVar,"Voici le désert:",[k for k in range(passeurVar+1,passeurVar+n)])
+                                      # Si j'ai mon désert, alors je renvoie N=passseurvar
             else:
                 passeurFixe=passeurVar+n
                 passeurVar=passeurFixe-1
