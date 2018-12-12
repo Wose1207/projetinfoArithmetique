@@ -343,7 +343,7 @@ def Bezout(n1, n2):
         else:
             return (y(k-2)-ListeQuotient[k]*y(k-1))
     k=len(ListeReste)-1
-    return (x(k), y(k))  #Sous la forme : n1*x + n2*y (=PGCD(n1, n2)) avec n1, n2=max(n1, n2), min(n1, n2)
+    return (x(k), y(k))
     
 def PPCM(n1, n2):
     "Entrées: n1(int), n2(int), Renvoie le ppcm de n1 et n2"
