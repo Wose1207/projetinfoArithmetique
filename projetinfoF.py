@@ -293,3 +293,66 @@ def GraphSpi2(d):
         
 """On peut voir que les nombres premiers suivent des diagonales, précisent , sur la fenetre, veuillez appuyer sur la touche enter pour voir les diagonales"""
 
+## Exercice 7: Algorithme Euclide
+
+def PGCD(n1, n2):
+    "Entrées: n1(int), n2(int), Renvoie le pgcd de n1 et n2"
+    assert n1>0 and n2>0, "Entiers strictement positifs "
+    r, pgcd=1, 0
+    if n2>n1:
+        n1, n2=n2, n1
+    elif n1==n2:
+        return n1
+    while r!=0:
+        q, r=(n1//n2), (n1%n2)
+        n1, n2, pgcd=n2, r, n2
+    return pgcd
+
+def AlgorithmeEuclide(n1, n2):
+    "Entrées: n1(int), n2(int), Renvoie le pgcd de n1 et n2"
+    assert n1>0 and n2>0, "Entiers strictement positifs "
+    r, ListeReste, ListeQuotient=1, [n1, n2], [1, 1]
+    if n2>n1:
+        n1, n2=n2, n1
+    while r!=0:
+        q, r=(n1//n2), (n1%n2)
+        ListeReste.append(r)
+        ListeQuotient.append(q)
+        n1, n2, pgcd=n2, r, n2
+    return ListeReste[:-1], ListeQuotient #Renvoie les listes de restes et de quotients utilisées par la fonction Bezout
+
+def Bezout(n1, n2):
+    "Entrées: n1(int), n2(int), Renvoie un tuple de 2 éléments (x,y) tel que PGCD(n1, n2)= n1*x + n2*y"
+    assert n1>0 and n2>0, "Entiers strictement positifs"
+    if n2==n1:#Cas trivial
+        return (0, 1)
+    (ListeReste, ListeQuotient)=AlgorithmeEuclide(n1, n2)
+    
+    def x(k):# Suite n°1 : sous fonction recursive qui remonte l'algorithme d'Euclide pour donner le coefficient x
+        if k==0:#Initialisation de la suite
+            return 1
+        elif k==1:
+            return 0
+        else:
+            return (x(k-2)-ListeQuotient[k]*x(k-1))
+    def y(k):# Suite n°2 : sous fonction recursive qui remonte l'algorithme d'Euclide pour donner le coefficient y
+        if k==0:#Initialisation de la suite
+            return 0
+        elif k==1:
+            return 1
+        else:
+            return (y(k-2)-ListeQuotient[k]*y(k-1))
+    k=len(ListeReste)-1
+    return (x(k), y(k))  #Sous la forme : n1*x + n2*y (=PGCD(n1, n2)) avec n1, n2=max(n1, n2), min(n1, n2)
+    
+def PPCM(n1, n2):
+    "Entrées: n1(int), n2(int), Renvoie le ppcm de n1 et n2"
+    assert n1>0 and n2>0, "Entiers strictement positifs "
+    Mn1=[n1*k for k in range(1, n2+1)]# Construction des listes de multiple
+    Mn2=[n2*k for k in range(1, n1+1)]
+    listeMCommun=[]
+    for M1 in Mn1:
+        for M2 in Mn2:
+            if M1==M2:
+                listeMCommun.append(M1)#Selection des element commun aux 2 listes
+    return min(listeMCommun)# Minimun des multiples communs
