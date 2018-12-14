@@ -250,14 +250,15 @@ def GraphSpi2(d):
     
     def clavier(event):                        # je defini la fonction clavier qui prend l'evenement que je créé
         touche=event.keysym
-        global a01,b01,b02,b03,b04,b05
+        global a01,b01,b02,b03,b04,b05,b06
         if touche=="Return":
             a01=canvas.create_text(500,30,text='On voit clairement que les nombres premiers en spirales suivent des diagonales précisent')
             b01=canvas.create_line(123,1000,1000,123)
             b02=canvas.create_line(0,883,883,0)
             b03=canvas.create_line(0,643,643,0)
             b04=canvas.create_line(363,1000,1000,363)
-            b05=canvas.create_line(0,200,1000,800)
+            b05=canvas.create_line(0,178,822,1000)
+            b06=canvas.create_line(482,0,1000,518)
         if touche=='Delete':
             canvas.delete(a01)
             canvas.delete(b01)
@@ -265,6 +266,7 @@ def GraphSpi2(d):
             canvas.delete(b03)
             canvas.delete(b04)
             canvas.delete(b05)
+            canvas.delete(b06)
             
             
     canvas=Canvas(main,height=1000,width=1000)
