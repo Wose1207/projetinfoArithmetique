@@ -1,7 +1,7 @@
 from tkinter import *
 from math import log
 
-### Projet FAURAX
+### Projet     ( FAURAX , PERRET , GIROUVET ) = ( Axel , Colin , Wandrille )
 
 def NP(n=7):
     "Fonction base pour ce projet. Entrée : n entier naturelle plus grand que 0"
@@ -163,19 +163,20 @@ def NiemeJumeaux(n):
 
 def Spirale(d):
     "d est la diagonale, un tour c'est par rappport a la diagonale 1, soit la suite Un , donc exemple : le premier tour va de uo a u1-1 , ie de 1 a 6 , la deuxieme ect"
+    assert d>0,'un nombre de tour positif'
     L=[2,3]
     nombre=0
-    U=1
+    U=1                                      # Mathematiquement, les chiffres des diagonales suivent 4 suites que j'appellent U,V,W,Z
     V=2
     W=3
     Z=4
-    for i in range(0,d-1):
+    for i in range(0,d-1):                   # J'actualise les valeurs de mes 4 suites suivant le nombres de tours
         U=U+8*i+6
         if NP(U):
-            L.append(U)
+            L.append(U)                      # J'ajoute a L si le nombre de la diagonale est premier
         V=V+8*i+8
         if NP(V):
-            L.append(V)
+            L.append(V)                     
         W=W+8*i+10
         if NP(W):
             L.append(W)
@@ -190,12 +191,14 @@ def Spirale(d):
         
 """ cela marche nickel , on initialise en disant que le ratio du premier tour est de 1 , normal . Puis on voit que le ratio tend vite vers 0 .
 Maintenant je peux aller chercher le numero de la diagonale telle que le ratio est plus petit que 0.1 par exemple
-Je peux aussi créer la spirale graphiquement"""
+Je peux aussi créer la spirale graphiquement
+
+Ne mettez pas plus de 6~7 sinon cela va depasser de la page graphique"""
 
 
 def GraphSpi(d):
     "d est le nombre de tour"
-    main=Tk()
+    main=Tk()                               #Création de la fenetre tk
     main.geometry('600x800+200+200')
     main.title("Spirale Euler")
     
@@ -212,17 +215,18 @@ def GraphSpi(d):
     k=1
     
     
-    for i in range(1,Spirale(d)[0]+1):
+    for i in range(1,Spirale(d)[0]+1):           # Spirale(d)[0] est le dernier terme de ma 4 eme suite, soit le dernier chiifre du dernier tour
         
-        #U,V,W,Z=U+8*(i-1)+6,V+8*(i-1)+8,W+8*(i-1)+10,Z+8*(i-1)+12
+        #U,V,W,Z=U+8*(i-1)+6,V+8*(i-1)+8,W+8*(i-1)+10,Z+8*(i-1)+12         Ce sont justes les expressions de la suite qui aide a comprendre le programme
+       
         if NP(i):
             if i==U or i==V or i==W or i==Z:
-                canvas.create_text(x,y,text=i,fill='red',font="bold")
+                canvas.create_text(x,y,text=i,fill='red',font="bold")         # Affichage des nombres premiers des diagonales en Rouge Gras
             else:
-                canvas.create_text(x,y,text=i,fill='blue')
+                canvas.create_text(x,y,text=i,fill='blue')                    # Affichage des autres nombres premiers 
         else:
             canvas.create_text(x,y,text=i,fill='black')
-        if i>=U and i<V:
+        if i>=U and i<V:                                              # La je change mes coordonnees d'affichage du nombre, en fonction de sa position et des suites
             x-=35
         if i>=V and i<W:
             y+=35
@@ -234,7 +238,6 @@ def GraphSpi(d):
         if i==Z:
             U,V,W,Z=U+8*(k-1)+6,V+8*(k-1)+8,W+8*(k-1)+10,Z+8*(k-1)+12
             k+=1
-    
     main.mainloop()
         
 """Ici n'est pas l'objectif , je dois percevoir des diagnoales de nombres premiers dans la Spirale. Le problème d'Euler dit que les nombres premiers ont tendance a se concentrer sur des diagonales, je vais donc faire un point a chaque fois que le nombre est premier, en reprenant la structure de mon ancien programme"""
@@ -245,16 +248,26 @@ def GraphSpi2(d):
     main.geometry('1000x1000+200+200')
     main.title("Spirale DE TOTO")
     
-    def clavier(event):
+    def clavier(event):                        # je defini la fonction clavier qui prend l'evenement que je créé
         touche=event.keysym
+        global a01,b01,b02,b03,b04,b05,b06
         if touche=="Return":
-            canvas.create_text(500,30,text='On voit clairement que les nombres premiers en spirales suivent des diagonales précisent')
-            canvas.create_line(123,1000,1000,123)
-            canvas.create_line(0,883,883,0)
-            canvas.create_line(0,643,643,0)
-            canvas.create_line(363,1000,1000,363)
-        #if touche=="a":
-            #canvas.create_line
+            a01=canvas.create_text(500,30,text='On voit clairement que les nombres premiers en spirales suivent des diagonales précisent')
+            b01=canvas.create_line(123,1000,1000,123)
+            b02=canvas.create_line(0,883,883,0)
+            b03=canvas.create_line(0,643,643,0)
+            b04=canvas.create_line(363,1000,1000,363)
+            b05=canvas.create_line(0,178,822,1000)
+            b06=canvas.create_line(482,0,1000,518)
+        if touche=='Delete':
+            canvas.delete(a01)
+            canvas.delete(b01)
+            canvas.delete(b02)
+            canvas.delete(b03)
+            canvas.delete(b04)
+            canvas.delete(b05)
+            canvas.delete(b06)
+            
             
     canvas=Canvas(main,height=1000,width=1000)
     canvas.pack()
@@ -262,7 +275,7 @@ def GraphSpi2(d):
     canvas.bind("<Key>",clavier)
     
     
-    U,V,W,Z=1,2,3,4
+    U,V,W,Z=1,2,3,4                                               # Sinon c'est exactement le même programme a part que cela affiche des points
     
     x=500
     y=500
@@ -288,10 +301,57 @@ def GraphSpi2(d):
         if i==Z:
             U,V,W,Z=U+8*(k-1)+6,V+8*(k-1)+8,W+8*(k-1)+10,Z+8*(k-1)+12
             k+=1
-    
+    print(Z)
     main.mainloop()
         
-"""On peut voir que les nombres premiers suivent des diagonales, précisent , sur la fenetre, veuillez appuyer sur la touche enter pour voir les diagonales"""
+"""On peut voir que les nombres premiers suivent des diagonales, précisent , sur la fenetre, veuillez appuyer sur la touche enter pour voir les diagonales, sur la touche supprimer pour les enlever"""
+        
+        
+##6 Nombre de mercenne
+
+
+def Sn(n):                                     #sous fonction, pour le test de lucas
+    "Suite de Lucas-Lehmer"
+    S=4
+    for i in range(n):
+        S=((S%Mn(n+2))**2)-2
+    return S
+
+def Mn(n):                                    # Calcul de terme de Mercenne
+    "Nombres de Mercenne"
+    return (2**n)-1
+
+    
+def TestLucas(n):                                             # On teste si Sn-2 % Mn == 0 , Sn est calculé en utilisant a chaque rang le reste de modulo Mn
+    "Lucas-Lehmer le sang, n different de 2 superieur a 2"
+    assert n>=3
+    if Sn(n-2)%Mn(n)==0:
+        return True, Mn(n)                                    # je renvoie si le nombre de mercenne est premier, et ce nombre
+    return False
+        
+        
+def LookatLULU():                                                  # Ce programme va repondre a la question initiale
+    "Je fais le test de lucas pour tous les nombres jusqu'a 257"
+    L=[2]
+    for i in Erh(257)[1:]:
+        if TestLucas(i)!=False:
+            L.append(i)
+    return L
+    
+def Rebels_deM(n):
+    "je veux les n premieres exceptions de mercenne , c'est a dire les nombres telle que pour p premier, 2**p -1 n'est pas premier, Exemple : pour p=11, 2047"
+    assert n>0,' une quantification positive'
+    Lexep=[]
+    rang=50
+    while True:
+        for i in Erh(rang)[1:]:
+            if TestLucas(i)==False:
+                Lexep.append(Mn(i))
+                if len(Lexep)==n:
+                    return Lexep
+        rang+=50                                  
+        
+""" Les exceptions de Mercenne sont des très grand nombres, effectivement le 2 ème est 8 388 607 """
 
 ## Exercice 7: Algorithme Euclide
 
