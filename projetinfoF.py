@@ -97,7 +97,7 @@ def VitesseNP(n):
 
 """ Je vais mintéresser mtn a la croissance des déserts de nombres premiers , c'est a dire l'espace ou il n'y a plus de nombres premiers . L'objectif est dans un premier temps de créer le programme désert, puis dans un second temps d'y reprensenter graphiquement"""
 
-def Desert(n):
+def Desert_NonOpt(n):
     "Je cherche le nombre N telle que entre N et N+n il n'y est pas de nombre premiers : Entrée un nombre naturel entier plus grand que 1"
     assert n>1 and n%2==0,'Cela ne sert a rien de prendre des nombres impaires et n>1'
     passeurVar=n                               
@@ -112,6 +112,56 @@ def Desert(n):
             else:
                 passeurFixe=passeurVar+n
                 passeurVar=passeurFixe-1
+   
+   
+""" Ce prgm n'est pas optimiser, je vais utiliser Erh pour l'optimiser, puis je representerai graphiquement les déserts """   
+            
+def Desert_Opt(n):
+    assert n>1 and n%2==0, ' Un nombre pair svp'
+    passeur=1000
+    while True:
+        t=(2,2)
+        for i in Erh(passeur)[1:]:
+            t=(i,t[0])                                      # J'utlise des tuples et Erh, ca va plus vite
+            if t[0]-t[1]==n:
+                return t[1]
+        passeur*=10 
+                
+def GraphDesert():                                          # Je reprend les idées précedentes
+    main=Tk()
+    main.geometry('1000x2000+200+200')
+    w=Canvas(main,height=1000,width=2000)
+    w.pack()
+    t=(2,2)
+    cx=10
+    marquage=0
+    for i in Erh(4001)[1:]:                                                     
+        t=(i,t[0])
+        if NombresPremiersJumeauxBool(t[1]):                                      # Parallèle avec le sous projet suivant, en j seront afficher les premiers jumeaux
+            w.create_line(cx,400,cx,398,fill='red')
+            w.create_text(cx,430,text='j',font='Arial 5',fill='red')
+        else:
+            w.create_line(cx,400,cx,401-10*(t[0]-t[1]))
+        if i//1000==marquage:
+            w.create_text(cx,460,text=marquage*1000)
+            marquage+=1
+        cx+=3
+    t=(4001,4001)
+    cx=10
+    for i in Erh(9010)[551:]:                                               # Je partage mon prgm en 2 pour pouvoir afficher a la suite en dessous le reste du diagramme
+        t=(i,t[0])
+        if NombresPremiersJumeauxBool(t[1]):                                      
+            w.create_line(cx,900,cx,898,fill='red')
+            w.create_text(cx,930,text='j',font='Arial 5',fill='red')
+        else:
+            w.create_line(cx,900,cx,901-10*(t[0]-t[1]))
+        if i//1000==marquage:
+            w.create_text(cx,960,text=marquage*1000)
+            marquage+=1
+        cx+=3
+        
+    main.mainloop()
+                
 
 
 ## 4 Les Jumeaux
